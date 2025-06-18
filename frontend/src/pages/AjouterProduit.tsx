@@ -13,13 +13,15 @@ export default function AjouterProduit() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    if (!token || !image) return;
+    if (!token) return;
 
     const formData = new FormData();
     formData.append('titre', titre);
     formData.append('prix', prix);
     formData.append('date_achat', dateAchat);
-    formData.append('image', image);
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
       await axios.post('http://localhost:3001/api/produits/add', formData, {
@@ -76,7 +78,6 @@ export default function AjouterProduit() {
           type="file"
           accept="image/*"
           onChange={e => setImage(e.target.files?.[0] || null)}
-          required
           className="w-full mb-6 text-[#4a6b5a] file:mr-3 file:py-1 file:px-3 file:rounded file:border file:border-[#4a6b5a] file:text-sm file:bg-white file:text-[#4a6b5a] hover:file:bg-[#f0f0f0]"
         />
 

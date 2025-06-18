@@ -115,7 +115,7 @@ export default function Historique() {
                   >
                     <td>
                       <img
-                        src={p.image_url}
+                        src={p.image_url || '/default-image.jpg'}
                         className="w-12 h-12 object-cover rounded-md"
                       />
                     </td>
@@ -127,8 +127,8 @@ export default function Historique() {
               </tbody>
             </table>
           </div>
-          <p className="mt-4 font-bold text-right">
-            Total : {totalDisponibles.toFixed(2)} €
+          <p className="mt-6 space-y-2 font-semibold text-[#D99C83]">
+              💸 Total achat : -{totalVendus.toFixed(2)} €
           </p>
         </div>
 
@@ -157,7 +157,7 @@ export default function Historique() {
                   >
                     <td>
                       <img
-                        src={p.image_url}
+                        src={p.image_url || '/default-image.jpg'}
                         className="w-12 h-12 object-cover rounded-md"
                       />
                     </td>

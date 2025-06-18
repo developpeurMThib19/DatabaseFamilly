@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const authRoutes = require('./routes/auth');
+const path = require('path');
 require('dotenv').config();
 
 // CONFIGURATION CORS
@@ -14,6 +15,9 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/produits', require('./routes/produits'));
 app.use('/uploads', express.static('uploads'));
+app.use('/static', express.static(path.join(__dirname, '../frontend/public')));
+app.use('/uploads', express.static('uploads'));
+app.use('/static', express.static(path.join(__dirname, '../frontend/public')));
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

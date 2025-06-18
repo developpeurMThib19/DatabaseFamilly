@@ -97,7 +97,7 @@ export default function Home() {
             className="bg-[#f3ede1] text-[#324B3A] border border-[#e1d7c3] shadow-md rounded-xl p-4 w-[240px] transition-transform hover:scale-105"
           >
             <img
-              src={p.image_url}
+              src={p.image_url || '/default-image.jpg'}
               alt={p.titre}
               className="w-full h-40 object-cover rounded-md mb-3"
           />

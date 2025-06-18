@@ -17,25 +17,30 @@ const storage = multer.diskStorage({
 const uploads = multer({ storage });
 
 router.post('/add', uploads.single('image'), async (req, res) => {
-    const token = req.headers.authorization?.split(' ')[1];
-    if (!token) return res.status(401).json({ error: 'Token manquant' });
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'Token manquant' });
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const { titre, prix, date_achat } = req.body;
-        const image_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-    
-        await pool.query(
-          'INSERT INTO produits (utilisateur_id, titre, prix, image_url, date_achat) VALUES ($1, $2, $3, $4, $5)',
-          [decoded.userId, titre, prix, image_url, date_achat]
-        );
-    
-        res.json({ success: true });
-      } catch (err) {
-        console.error('Erreur ajout produit :', err);
-        res.status(500).json({ error: err.message });
-      }
-})
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const { titre, prix, date_achat } = req.body;
+
+    // Si pas d'image, on peut mettre une image par défaut ou null
+    const image_url = req.file
+    ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
+    : `${req.protocol}://${req.get('host')}/static/default-image.jpg`;
+
+    await pool.query(
+      'INSERT INTO produits (utilisateur_id, titre, prix, image_url, date_achat) VALUES ($1, $2, $3, $4, $5)',
+      [decoded.userId, titre, prix, image_url, date_achat]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Erreur ajout produit :', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 router.put('/:id/vendu', authenticateToken, async (req, res) => {
   const produitId = req.params.id;
