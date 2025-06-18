@@ -117,6 +117,9 @@ export default function Home() {
             >
               📦 Vendre ce produit
             </button>
+            <Link to={`/produit/${p.id}`} className="text-sm text-smoke hover:underline block mt-2">
+              Modifier ✏️
+            </Link>
           </div>
           
           ))}

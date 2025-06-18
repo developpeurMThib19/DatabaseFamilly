@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import AjouterProduit from "./pages/AjouterProduit";
 import Historique from './pages/Historique';
 import PrivateRoute from "./components/PrivateRoute";
+import ProduitDetail from "./pages/ProduitDetail";
 
 function App() {
   return(
@@ -17,6 +18,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/ajouter-produit" element={<AjouterProduit />} />
           <Route path="/historique" element={<Historique />} />
+          <Route path="/produit/:id" element={<ProduitDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>

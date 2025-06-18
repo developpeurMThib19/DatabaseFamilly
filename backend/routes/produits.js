@@ -96,4 +96,45 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query('SELECT * FROM produits WHERE id = $1', [id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Produit introuvable' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Erreur get produit :', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put('/:id/update', uploads.single('image'), authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  const { titre, prix, date_achat } = req.body;
+
+  try {
+    let image_url = null;
+    if (req.file) {
+      image_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+      await pool.query(
+        'UPDATE produits SET titre=$1, prix=$2, date_achat=$3, image_url=$4 WHERE id=$5',
+        [titre, prix, date_achat, image_url, id]
+      );
+    } else {
+      await pool.query(
+        'UPDATE produits SET titre=$1, prix=$2, date_achat=$3 WHERE id=$4',
+        [titre, prix, date_achat, id]
+      );
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Erreur update produit :', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
 module.exports = router;
