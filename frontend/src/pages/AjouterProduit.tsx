@@ -38,7 +38,7 @@ export default function AjouterProduit() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fdf6ec] flex items-center justify-center px-4 font-sans">
+    <div className="min-h-screen bg-[#f3ede1] flex items-center justify-center px-4 font-sans">
       <form
         onSubmit={handleSubmit}
         className="bg-background text-forest shadow-md rounded-lg px-8 py-6 max-w-md mx-auto border border-forest"

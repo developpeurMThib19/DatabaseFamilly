@@ -55,7 +55,7 @@ export default function ProduitDetail() {
   if (loading) return <p className="text-center mt-8">Chargement...</p>;
 
   return (
-    <div className="min-h-screen bg-[#fdf6ec] text-forest px-4 py-10 flex justify-center">
+    <div className="min-h-screen bg-[#f3ede1] text-forest px-4 py-10 flex justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
         <h1 className="text-2xl font-semibold mb-6 text-center">Modifier le produit</h1>
 
