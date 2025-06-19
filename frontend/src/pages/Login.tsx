@@ -5,6 +5,7 @@ import axios from '../api/axios';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<'email' | 'password' | 'server' | null>(null);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -14,8 +15,11 @@ export default function Login() {
       });
       localStorage.setItem('token', res.data.token);
       navigate('/home');
-    } catch (err) {
-      alert('Erreur de connexion');
+    } catch (err: any) {
+      const msg = err?.response?.data?.error;
+      if (msg === 'email') setError('email');
+      else if (msg === 'password') setError('password');
+      else setError('server');
     }
   };
 
@@ -30,6 +34,9 @@ export default function Login() {
           placeholder="Email"
           className="w-full border border-[#a8c3a0] bg-[#f3ede1] text-[#324B3A] placeholder-[#7D8CA3] p-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-[#A8C3A0]"
         />
+        {error === 'email' && (
+          <p className="text-red-500 text-sm mb-3">❌ Adresse email incorrecte</p>
+        )}
 
         <input
           type="password"
@@ -38,6 +45,14 @@ export default function Login() {
           placeholder="Mot de passe"
           className="w-full border border-[#a8c3a0] bg-[#f3ede1] text-[#324B3A] placeholder-[#7D8CA3] p-3 rounded mb-6 focus:outline-none focus:ring-2 focus:ring-[#A8C3A0]"
         />
+        { error === "password" && (
+          <p className="text-red-500 text-sm mb-3">❌ Mot de passe incorrect</p>
+        )}
+
+        {/* Erreur serveur éventuelle */}
+        { error === 'server' && (
+          <p className="text-red-500 text-sm mb-3">❌ Erreur serveur. Réessaie plus tard.</p>
+        )}
 
         <button
           onClick={handleLogin}

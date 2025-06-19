@@ -25,18 +25,26 @@ router.post('/register', async (req, res) => {
     try {
       const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
       const user = result.rows[0];
-      if (!user) return res.status(400).json({ error: 'Identifiants invalides' });
   
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) return res.status(400).json({ error: 'Identifiants invalides' });
+      if (!user) {
+        return res.status(400).json({ error: 'email' }); // Email incorrect
+      }
   
-      const token = jwt.sign({ userId: user.id, nom: user.nom, prenom: user.prenom, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        return res.status(400).json({ error: 'password' }); // Mot de passe incorrect
+      }
+  
+      const token = jwt.sign({ userId: user.id, nom: user.nom, prenom: user.prenom, email: user.email }, process.env.JWT_SECRET, {
+        expiresIn: '24h',
+      });
+  
       res.json({ token });
     } catch (err) {
-      console.error('❌ Erreur lors de la connexion :', err); // ← ici
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: 'server' });
     }
   });
+  
   
 
 module.exports = router;
