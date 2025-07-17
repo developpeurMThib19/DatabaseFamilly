@@ -7,9 +7,9 @@ require('dotenv').config();
 
 // CONFIGURATION CORS
 app.use(cors({
-    origin: 'http://localhost:5173', // ou le port ou tourne ton frontend Vite
+    origin: '*',
     credentials: true,
-}));
+  }));
 
 app.use(express.json());
 app.use('/api/auth', authRoutes);
