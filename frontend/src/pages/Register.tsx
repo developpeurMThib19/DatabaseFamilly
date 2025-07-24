@@ -11,7 +11,7 @@ export default function Register() {
 
   const handleRegister = async () => {
     try {
-      await axios.post('http://localhost:3001/api/auth/register', { nom, prenom, email, password });
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, { nom, prenom, email, password });
       navigate('/connexion');
     } catch (err) {
       alert("Erreur d'inscription");

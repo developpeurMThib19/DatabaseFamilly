@@ -10,7 +10,7 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post('http://localhost:3001/api/auth/login', { email, password }, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, { email, password }, {
         withCredentials: true,
       });
       localStorage.setItem('token', res.data.token);

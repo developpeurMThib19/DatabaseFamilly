@@ -24,7 +24,7 @@ export default function AjouterProduit() {
     }
 
     try {
-      await axios.post('http://localhost:3001/api/produits/add', formData, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/produits/add`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
