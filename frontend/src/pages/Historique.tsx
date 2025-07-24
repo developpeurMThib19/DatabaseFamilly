@@ -56,7 +56,7 @@ export default function Historique() {
 
   const produitsVendus = produits.filter((p) => p.vendu);
   const produitsDisponibles = produits.filter((p) => !p.vendu);
-  const totalDisponibles = produitsDisponibles.reduce((sum, p) => sum + parseFloat(p.prix), 0);
+  //const totalDisponibles = produitsDisponibles.reduce((sum, p) => sum + parseFloat(p.prix), 0);
 
 
   const totalVendus = produitsVendus.reduce(

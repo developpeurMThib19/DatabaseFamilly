@@ -35,8 +35,10 @@ export default function Home() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+
     if (token) {
       const decoded: any = jwtDecode(token);
+
       if (decoded.exp * 1000 < Date.now()) {
         localStorage.removeItem('token');
         window.location.href = '/login';
@@ -45,17 +47,20 @@ export default function Home() {
 
       setUser(decoded);
 
-      axios.get('http://localhost:3001/api/produits', {
-        headers: { Authorization: `Bearer ${token}` }
+      fetch(`${import.meta.env.VITE_API_URL}/api/produits`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
-      .then(res => {
-        const data = res.data.map((p: any) => ({
-          ...p,
-          vendu: p.vendu === true || p.vendu === 'true'
-        }));
-        setProduits(data);
-      })
-      .catch(err => console.error('Erreur produits :', err));
+        .then(res => res.json())
+        .then(data => {
+          const produitsTransformés = data.map((p: any) => ({
+            ...p,
+            vendu: p.vendu === true || p.vendu === 'true'
+          }));
+          setProduits(produitsTransformés);
+        })
+        .catch(err => console.error('Erreur produits :', err));
     }
   }, []);
 
