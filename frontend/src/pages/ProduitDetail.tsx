@@ -15,7 +15,7 @@ export default function ProduitDetail() {
     const token = localStorage.getItem("token");
     if (!token || !id) return;
 
-    axios.get(`http://localhost:3001/api/produits/${id}`, {
+    axios.get(`${import.meta.env.VITE_API_URL}/api/produits/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => {
@@ -39,7 +39,7 @@ export default function ProduitDetail() {
     if (newImage) formData.append("image", newImage);
   
     try {
-      await axios.put(`http://localhost:3001/api/produits/${id}/update`, formData, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/produits/${id}/update`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

@@ -40,7 +40,7 @@ export default function Historique() {
       setUser(decoded);
 
       axios
-        .get("http://localhost:3001/api/produits", {
+        .get(`${import.meta.env.VITE_API_URL}/api/produits`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {

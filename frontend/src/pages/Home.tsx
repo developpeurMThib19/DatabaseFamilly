@@ -159,12 +159,12 @@ export default function Home() {
                   if (!token || !selectedProduit) return;
 
                   await axios.put(
-                    `http://localhost:3001/api/produits/${selectedProduit.id}/vendu`,
+                    `${import.meta.env.VITE_API_URL}/api/produits/${selectedProduit.id}/vendu`,
                     { prix_revente: prixRevente },
                     { headers: { Authorization: `Bearer ${token}` } }
                   );
 
-                  const res = await axios.get('http://localhost:3001/api/produits', {
+                  const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/produits`, {
                     headers: { Authorization: `Bearer ${token}` },
                   });
                   setProduits(res.data);
