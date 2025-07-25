@@ -4,10 +4,12 @@ const app = express();
 const authRoutes = require('./routes/auth');
 const path = require('path');
 require('dotenv').config();
+
+// 🔓 Autorise ton frontend React Render
 const allowedOrigins = [
-  'http://localhost:3000',
-  'https://databasefamilly-1.onrender.com',
-]
+  'https://databasefamilly-1.onrender.com', // ton vrai frontend Render
+  'http://localhost:3000'                   // pour développement local
+];
 
 // CONFIGURATION CORS
 app.use(cors({
@@ -18,11 +20,12 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
 
+// 🔍 Pour lire le body en JSON
 app.use(express.json());
+
 app.use('/api/auth', authRoutes);
 app.use('/api/produits', require('./routes/produits'));
 app.use('/uploads', express.static('uploads'));
@@ -31,25 +34,26 @@ app.use('/uploads', express.static('uploads'));
 app.use('/static', express.static(path.join(__dirname, '../frontend/public')));
 app.use(express.json());
 
-app.post('/api/register', (req, res) => {
-  const { email, password } = req.body;
+// ✅ Route d'inscription
+app.post('/api/auth/register', (req, res) => {
+  const { nom, prenom, email, password } = req.body;
 
-  // Exemple simple (à adapter avec ta base de données réelle)
   if (!email || !password) {
-    return res.status(400).json({ error: 'Email et mot de passe requis.' });
+    return res.status(400).json({ error: 'Email et mot de passe requis' });
   }
 
-  // À remplacer par une insertion en base (ex: PostgreSQL)
-  console.log('Nouvel utilisateur :', { email, password });
+  // 🔐 À remplacer par un enregistrement réel en base de données
+  console.log('Nouvel utilisateur enregistré :', { nom, prenom, email });
 
-  res.status(201).json({ message: 'Utilisateur créé avec succès' });
+  res.status(201).json({ message: 'Inscription réussie' });
 });
 
-const PORT = process.env.PORT || 3000;
-app.get('/', (req, res) => {
-    res.send('API en ligne !');
-  });
+// ✅ Lancement du serveur
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Serveur lancé sur le port ${PORT}`);
+});
   
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Serveur lancé sur le port ${PORT}`);
-  });
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Serveur lancé sur le port ${PORT}`);
+});
