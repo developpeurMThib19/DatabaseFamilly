@@ -18,6 +18,21 @@ app.use('/uploads', express.static('uploads'));
 app.use('/static', express.static(path.join(__dirname, '../frontend/public')));
 app.use('/uploads', express.static('uploads'));
 app.use('/static', express.static(path.join(__dirname, '../frontend/public')));
+app.use(express.json());
+
+app.post('/api/register', (req, res) => {
+  const { email, password } = req.body;
+
+  // Exemple simple (à adapter avec ta base de données réelle)
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email et mot de passe requis.' });
+  }
+
+  // À remplacer par une insertion en base (ex: PostgreSQL)
+  console.log('Nouvel utilisateur :', { email, password });
+
+  res.status(201).json({ message: 'Utilisateur créé avec succès' });
+});
 
 const PORT = process.env.PORT || 3000;
 app.get('/', (req, res) => {
