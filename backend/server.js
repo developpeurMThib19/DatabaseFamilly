@@ -4,11 +4,22 @@ const app = express();
 const authRoutes = require('./routes/auth');
 const path = require('path');
 require('dotenv').config();
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://ton-site-vite.onrender.com',
+]
 
 // CONFIGURATION CORS
 app.use(cors({
-  origin: 'https://ton-site-vite.onrender.com', // ← à remplacer par ton vrai frontend
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
 }));
 
 app.use(express.json());
