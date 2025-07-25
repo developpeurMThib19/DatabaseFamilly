@@ -6,7 +6,7 @@ const path = require('path');
 require('dotenv').config();
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://ton-site-vite.onrender.com',
+  'https://databasefamilly-1.onrender.com',
 ]
 
 // CONFIGURATION CORS
