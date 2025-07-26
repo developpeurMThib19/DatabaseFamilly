@@ -57,10 +57,9 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
+app.use('/api/auth', authRoutes);
+app.use('/api/produits', require('./routes/produits'));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-});
 
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, 'public', 'index.html'));
