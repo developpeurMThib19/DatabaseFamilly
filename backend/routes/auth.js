@@ -5,20 +5,30 @@ const pool = require('../db');
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
-    const { nom, prenom, email, password } = req.body;
-    try {
-      const hash = await bcrypt.hash(password, 10);
-      const result = await pool.query(
-        'INSERT INTO users (nom, prenom, email, password) VALUES ($1, $2, $3, $4) RETURNING id, email',
-        [nom, prenom, email, hash]
-      );
-      res.json(result.rows[0]);
-    } catch (err) {
-      console.error('❌ Erreur lors de l’inscription :', err); // <-- log complet
-      res.status(500).json({ error: err.message });
-    }
-  });
-  
+  const { nom, prenom, email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email et mot de passe requis' });
+  }
+
+  const check = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+
+  if (check.rows.length > 0) {
+    return res.status(409).json({ error: 'Cet email existe déjà.' });
+  }
+
+  try {
+    const result = await pool.query(
+      'INSERT INTO users (nom, prenom, email, password) VALUES ($1, $2, $3, $4) RETURNING id',
+      [nom, prenom, email, password]
+    );
+
+    res.status(201).json({ message: 'Inscription réussie', id: result.rows[0].id });
+  } catch (error) {
+    console.error('Erreur DB :', error);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
 
   router.post('/login', async (req, res) => {
     const { email, password } = req.body;
