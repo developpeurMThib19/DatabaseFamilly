@@ -70,6 +70,10 @@ export default function Historique() {
   const pourcentage =
     totalVendus === 0 ? 0 : ((totalVentes - totalVendus) / totalVendus) * 100;
 
+  const totalAchatsDisponibles = produitsDisponibles.reduce((total, produits) => {
+    return total + parseFloat(produits.prix);
+  }, 0);
+
   return (
     <div className="min-h-screen bg-[#f3ede1] text-[#324B3A] px-8 py-10 font-sans">
       <h1 className="text-3xl font-bold text-center mb-6">
@@ -128,7 +132,7 @@ export default function Historique() {
             </table>
           </div>
           <p className="mt-6 space-y-2 font-semibold text-[#D99C83]">
-              💸 Total achat : -{totalVendus.toFixed(2)} €
+              💸 Total achat : -{totalAchatsDisponibles.toFixed(2)} €
           </p>
         </div>
 
