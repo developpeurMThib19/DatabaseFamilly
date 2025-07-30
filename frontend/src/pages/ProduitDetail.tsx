@@ -36,7 +36,7 @@ export default function ProduitDetail() {
     formData.append("titre", produit.titre);
     formData.append("prix", produit.prix);
     formData.append("date_achat", produit.date_achat);
-    formData.append("prix_vente", produit.prix_vente || '');
+    formData.append("prix_vente", produit.prix_revente || '');
     formData.append("date_vente", produit.date_vente || '');
     if (newImage) formData.append("image", newImage);
   
@@ -91,9 +91,9 @@ export default function ProduitDetail() {
         <label className="block mb-2 font-semibold">Prix de vente (€)</label>
         <input 
           className="w-full border p-2 rounded mb-4"
-          value={produit.prix_vente || ''}
+          value={produit.prix_revente || ''}
           type="number"
-          onChange={(e) => setProduit({ ...produit, prix_vente: e.target.value})}
+          onChange={(e) => setProduit({ ...produit, prix_revente: e.target.value })}
         />
 
         <label className="block mb-2 font-semibold">Date d'achat</label>
