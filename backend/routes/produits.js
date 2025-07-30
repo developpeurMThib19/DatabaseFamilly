@@ -5,17 +5,18 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
 const authenticateToken = require('../middlewares/authenticateToken');
+const uploads = multer({ storage });
 
-const storage = multer.diskStorage({
-    destination: 'uploads/',
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname);
-        cb(null, Date.now() + ext);
-    },
-});
+// Local
+// const storage = multer.diskStorage({
+//     destination: 'uploads/',
+//     filename: (req, file, cb) => {
+//         const ext = path.extname(file.originalname);
+//         cb(null, Date.now() + ext);
+//     },
+// });
 
 const storage = require('../utils/cloudinaryStorage');
-const uploads = multer({ storage });
 
 router.post('/add', uploads.single('image'), async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
