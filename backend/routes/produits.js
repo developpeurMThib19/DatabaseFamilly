@@ -19,6 +19,11 @@ const storage = require('../utils/cloudinaryStorage');
 
 const uploads = multer({ storage });
 
+const prixFloat = parseFloat(prix);
+if (isNaN(prixFloat)) {
+  return res.status(400).json({ error: "Le prix doit être un nombre valide." });
+}
+
 
 router.post('/add', uploads.single('image'), async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -28,13 +33,18 @@ router.post('/add', uploads.single('image'), async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const { titre, prix, date_achat } = req.body;
 
+    const prixFloat = parseFloat(prix);
+    if (isNaN(prixFloat)) {
+      return res.status(400).json({ error: 'Le prix doit être un nombre valide.' });
+    }
+
     // ✅ Adapté pour Cloudinary : req.file?.path contient l’URL hébergée
     // ✅ Si Cloudinary renvoie une image, on l'utilise, sinon image par défaut
     const image_url = req.file?.path || `${req.protocol}://${req.get('host')}/static/default-image.jpg`;
 
     await pool.query(
       'INSERT INTO produits (utilisateur_id, titre, prix, image_url, date_achat) VALUES ($1, $2, $3, $4, $5)',
-      [decoded.userId, prix, titre, image_url, date_achat]  // <- vérifie l’ordre si besoin
+      [decoded.userId, titre, parseFloat(prix), image_url, date_achat]
     );
 
     res.json({ success: true });
@@ -116,6 +126,16 @@ router.put('/:id/update', uploads.single('image'), authenticateToken, async (req
   const { id } = req.params;
   const { titre, prix, prix_revente, date_achat, date_vente } = req.body;
   
+  const prixFloat = parseFloat(prix);
+  const prixReventeFloat = prix_revente ? parseFloat(prix_revente) : null;
+
+  if (isNaN(prixFloat)) {
+    return res.status(400).json({ error: 'Le prix doit être un nombre valide.' });
+  }
+  if (prix_revente && isNaN(prixReventeFloat)) {
+    return res.status(400).json({ error: 'Le prix de revente doit être un nombre valide.' });
+  }
+
   try {
     let image_url = null;
     if (req.file) {
@@ -126,8 +146,8 @@ router.put('/:id/update', uploads.single('image'), authenticateToken, async (req
       );
     } else {
       await pool.query(
-        'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, date_vente=$5, image_url=$6 WHERE id=$7',
-        [titre, prix, prix_revente, date_achat, date_vente, image_url, id]
+        'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, date_vente=$5 WHERE id=$6',
+        [titre, prix, prix_revente, date_achat, date_vente, id]
       );
     }
 
