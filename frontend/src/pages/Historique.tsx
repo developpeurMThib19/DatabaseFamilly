@@ -151,7 +151,7 @@ export default function Historique() {
                     <td>
                       <button
                         onClick={() => handleDelete(p.id)}
-                        className="bg-[#D99C83] hover:bg-[#cc8871] text-white text-xs py-1 px-3 rounded"
+                        className="bg-[#D99C83] hover:bg-[#cc8871] text-sm text-white hover:underline"
                       >
                         Supprimer
                       </button>
@@ -213,7 +213,7 @@ export default function Historique() {
                     <td>
                       <button
                         onClick={() => handleDelete(p.id)}
-                        className="bg-[#D99C83] hover:bg-[#cc8871] text-white text-xs py-1 px-3 rounded"
+                        className="bg-[#D99C83] hover:bg-[#cc8871] text-sm text-white hover:underline"
                       >
                         Supprimer
                       </button>

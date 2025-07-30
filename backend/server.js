@@ -27,8 +27,16 @@ app.use(cors({
 
 //app.options('*', cors());
 
-// ✅ Middleware JSON
+// ✅ Middleware pour parser les JSON
 app.use(express.json());
+
+// ✅ Servir les fichiers statiques (comme default-image.jpg)
+app.use('/static', express.static(path.join(__dirname, 'static')));
+
+// ⬇️ Tes autres middlewares, routes, etc.
+const produitsRouter = require('./routes/produits');
+app.use('/api/produits', produitsRouter);
+
 
 // ✅ Routes API
 const authRoutes = require('./routes/auth');

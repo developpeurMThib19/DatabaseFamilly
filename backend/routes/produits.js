@@ -14,6 +14,8 @@ const storage = multer.diskStorage({
     },
 });
 
+const multer = require('multer');
+const storage = require('../utils/cloudinaryStorage');
 const uploads = multer({ storage });
 
 router.post('/add', uploads.single('image'), async (req, res) => {
@@ -24,14 +26,13 @@ router.post('/add', uploads.single('image'), async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const { titre, prix, date_achat } = req.body;
 
-    // Si pas d'image, on peut mettre une image par défaut ou null
-    const image_url = req.file
-    ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
-    : `${req.protocol}://${req.get('host')}/static/default-image.jpg`;
+    // ✅ Adapté pour Cloudinary : req.file?.path contient l’URL hébergée
+    // ✅ Si Cloudinary renvoie une image, on l'utilise, sinon image par défaut
+    const image_url = req.file?.path || `${req.protocol}://${req.get('host')}/static/default-image.jpg`;
 
     await pool.query(
       'INSERT INTO produits (utilisateur_id, titre, prix, image_url, date_achat) VALUES ($1, $2, $3, $4, $5)',
-      [decoded.userId, titre, prix, image_url, date_achat]
+      [decoded.userId, prix, titre, image_url, date_achat]  // <- vérifie l’ordre si besoin
     );
 
     res.json({ success: true });
