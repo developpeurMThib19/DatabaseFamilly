@@ -135,6 +135,16 @@ router.put('/:id/update', uploads.single('image'), authenticateToken, async (req
   }
 });
 
+router.delete('/:id/delete', authenticateToken, async (req, res) => {
+  const { id } = req.params;
 
+  try {
+    await pool.query('DELETE FROM produits WHERE id = $1', [id]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Erreur suppression produit :", err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;

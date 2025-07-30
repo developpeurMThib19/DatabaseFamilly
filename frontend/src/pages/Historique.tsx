@@ -74,6 +74,22 @@ export default function Historique() {
     return total + parseFloat(produits.prix);
   }, 0);
 
+  const handleDelete = async (id: number) => {
+    const confirmDelete = window.confirm("Voulez-vous vraiment supprimer ce produit ?");
+    if (!confirmDelete) return;
+
+    const token = localStorage.getItem("token");
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/produits/${id}/delete`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setProduits(produits.filter((p) => p.id !== id));
+    } catch(err) {
+      console.error("Erreur lors de la suppression :", err);
+      alert("Erreur lors de la suppression du produit.")
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f3ede1] text-[#324B3A] px-8 py-10 font-sans">
       <h1 className="text-3xl font-bold text-center mb-6">
@@ -130,6 +146,12 @@ export default function Historique() {
                       <button onClick={() => navigate(`/produit/${p.id}`)} 
                         className="text-sm text-white-600 hover:underline">
                         Modifier
+                      </button>
+                      <button
+                        onClick={() => handleDelete(p.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white text-xs py-1 px-3 rounded"
+                      >
+                        Supprimer
                       </button>
                     </td>
                   </tr>
