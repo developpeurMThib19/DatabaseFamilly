@@ -88,12 +88,28 @@ export default function ProduitDetail() {
           onChange={(e) => setProduit({ ...produit, prix: e.target.value })}
         />
 
+        <label className="block mb-2 font-semibold">Prix de vente (€)</label>
+        <input 
+          className="w-full border p-2 rounded mb-4"
+          value={produit.prix_vente || ''}
+          type="number"
+          onChange={(e) => setProduit({ ...produit, prix_vente: e.target.value})}
+        />
+
         <label className="block mb-2 font-semibold">Date d'achat</label>
         <input
           className="w-full border p-2 rounded mb-6"
           type="date"
           value={produit.date_achat?.substring(0, 10)}
           onChange={(e) => setProduit({ ...produit, date_achat: e.target.value })}
+        />
+
+        <label className="block mb-2 font-semibold">Date de vente</label>
+        <input
+          className="w-full border p-2 rounded mb-6"
+          type="date"
+          value={produit.date_vente?.substring(0, 10) || ''}
+          onChange={(e) => setProduit({ ...produit, date_vente: e.target.value })}
         />
 
         <div className="text-center">
