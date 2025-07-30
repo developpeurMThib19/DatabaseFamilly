@@ -120,30 +120,26 @@ export default function ProduitDetail() {
             />
           </>
         )}
-        <div className="text-center">
-          <button
-            onClick={handleUpdate}
-            className="bg-forest text-white px-6 py-2 rounded hover:bg-[#3b5548]"
-          >
-            Enregistrer les modifications
-          </button>
+          <div className="text-center">
+            <button
+              onClick={handleUpdate}
+              className="bg-forest text-white px-6 py-2 rounded hover:bg-[#3b5548]"
+            >
+              Enregistrer les modifications
+            </button>
+
+            {showToast && (
+              <div className="mt-4">
+                <button
+                  onClick={() => navigate("/home")}
+                  className="bg-[#D99C83] hover:bg-[#cc8871] text-white font-semibold py-2 px-5 rounded-full transition mt-4"
+                >
+                  ← Retour à l’accueil
+                </button>
+              </div>
+            )}
         </div>
       </div>
-      {showToast && (
-        <div className="fixed top-4 right-4 bg-[#A8C3A0] text-forest px-4 py-2 rounded shadow-lg animate-fade-in">
-        ✅ Modifications enregistrées !
-        </div>
-      )}
-      {showToast && (
-        <div className="text-center mt-6">
-          <button
-            onClick={() => navigate("/home")}
-            className="bg-[#D99C83] hover:bg-[#cc8871] text-white font-semibold py-2 px-5 rounded-full transition"
-          >
-            ← Retour à l’accueil
-          </button>
-        </div>
-      )}
     </div>
   );
 }
