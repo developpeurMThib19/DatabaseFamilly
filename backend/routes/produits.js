@@ -123,7 +123,7 @@ router.put('/:id/update', uploads.single('image'), authenticateToken, async (req
       );
     } else {
       await pool.query(
-        'UPDATE produits SET titre=$1, prix=$2, date_achat=$3 WHERE id=$4',
+        'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, image_url=$5 WHERE id=$6',
         [titre, prix, date_achat, id]
       );
     }
