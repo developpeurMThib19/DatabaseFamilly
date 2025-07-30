@@ -126,6 +126,12 @@ export default function Historique() {
                     <td>{p.titre}</td>
                     <td>{parseFloat(p.prix).toFixed(2)} €</td>
                     <td>{new Date(p.date_achat).toLocaleDateString()}</td>
+                    <td>
+                      <button onClick={() => navigate(`/produit/${p.id}`)} 
+                        className="text-sm text-white-600 hover:underline">
+                        Modifier
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -176,7 +182,7 @@ export default function Historique() {
                     <td>{new Date(p.date_achat).toLocaleDateString()}</td>
                     <td>
                       <button onClick={() => navigate(`/produit/${p.id}`)} 
-                        className="text-sm text-blue-600 hover:underline">
+                        className="text-sm text-white-600 hover:underline">
                         Modifier
                       </button>
                     </td>

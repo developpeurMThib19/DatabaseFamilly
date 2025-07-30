@@ -111,21 +111,20 @@ router.get('/:id', authenticateToken, async (req, res) => {
 
 router.put('/:id/update', uploads.single('image'), authenticateToken, async (req, res) => {
   const { id } = req.params;
-  const { titre, prix, prix_revente, date_achat } = req.body;
-  console.log({ titre, prix, prix_revente, date_achat });
+  const { titre, prix, prix_revente, date_achat, date_vente } = req.body;
   
   try {
     let image_url = null;
     if (req.file) {
       image_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
       await pool.query(
-        'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, image_url=$5 WHERE id=$6',
-        [titre, prix, prix_revente, date_achat, image_url, id]
+        'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, date_vente=$5, image_url=$6 WHERE id=$7',
+        [titre, prix, prix_revente, date_achat, date_vente, image_url, id]
       );
     } else {
       await pool.query(
-        'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4 WHERE id=$5',
-        [titre, prix, prix_revente, date_achat, id]
+        'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, date_vente=$5, image_url=$6 WHERE id=$7',
+        [titre, prix, prix_revente, date_achat, date_vente, image_url, id]
       );
     }
 
