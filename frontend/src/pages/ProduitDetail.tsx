@@ -102,14 +102,6 @@ export default function ProduitDetail() {
           </>
         )}
 
-        <label className="block mb-2 font-semibold">Prix de vente (€)</label>
-        <input 
-          className="w-full border p-2 rounded mb-4"
-          value={produit.prix_revente || ""}
-          type="number"
-          onChange={(e) => setProduit({ ...produit, prix_revente: e.target.value })}
-        />
-
         <label className="block mb-2 font-semibold">Date d'achat</label>
         <input
           className="w-full border p-2 rounded mb-6"
@@ -142,15 +134,14 @@ export default function ProduitDetail() {
         ✅ Modifications enregistrées !
         </div>
       )}
-      {showToast && (
-        <div className="flex justify-center mb-6">
-          <button onClick={() => navigate("/home")}
-          className="bg-[#D99C83] hover:bg-[#D99C83] text-white font-semibold py-2 px-5 rounded-full transition"
-          >
-            ← Retour à l’accueil
-          </button>
-        </div>
-      )}
+      <div className="flex justify-center mb-6">
+        <button
+          onClick={() => navigate("/home")}
+          className="bg-[#D99C83] hover:bg-[#c88872] text-white font-semibold py-2 px-5 rounded-full transition"
+        >
+          ← Retour à l’accueil
+        </button>
+      </div>
     </div>
   );
 }
