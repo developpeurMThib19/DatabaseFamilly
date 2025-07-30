@@ -141,14 +141,16 @@ export default function ProduitDetail() {
         <div className="fixed top-4 right-4 bg-[#A8C3A0] text-forest px-4 py-2 rounded shadow-lg animate-fade-in">
         ✅ Modifications enregistrées !
         </div>
-    )}
-    <div className="flex justify-center mb-6">
-      <button onClick={() => navigate("/home")}
-      className="bg-[#324B3A] hover:bg-[#2a3f31] text-white font-semibold py-2 px-5 rounded-full transition"
-      >
-        ← Retour à l’accueil
-      </button>
-    </div>
+      )}
+      {showToast && (
+        <div className="flex justify-center mb-6">
+          <button onClick={() => navigate("/home")}
+          className="bg-[#D99C83] hover:bg-[#D99C83] text-white font-semibold py-2 px-5 rounded-full transition"
+          >
+            ← Retour à l’accueil
+          </button>
+        </div>
+      )}
     </div>
   );
 }
