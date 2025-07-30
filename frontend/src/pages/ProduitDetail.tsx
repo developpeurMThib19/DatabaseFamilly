@@ -36,8 +36,10 @@ export default function ProduitDetail() {
     formData.append("titre", produit.titre);
     formData.append("prix", produit.prix);
     formData.append("date_achat", produit.date_achat);
-    formData.append("prix_revente", produit.prix_revente || '');
-    formData.append("date_vente", produit.date_vente || '');
+    if (produit.vendu) {
+      formData.append("prix_revente", produit.prix_revente || "");
+      formData.append("date_vente", produit.date_vente || '');
+    }
     if (newImage) formData.append("image", newImage);
   
     try {
@@ -88,13 +90,17 @@ export default function ProduitDetail() {
           onChange={(e) => setProduit({ ...produit, prix: e.target.value })}
         />
 
-        <label className="block mb-2 font-semibold">Prix de vente (€)</label>
-        <input 
-          className="w-full border p-2 rounded mb-4"
-          value={produit.prix_revente || ""}
-          type="number"
-          onChange={(e) => setProduit({ ...produit, prix_revente: e.target.value })}
-        />
+        {produit.vendu && (
+          <>
+            <label className="block mb-2 font-semibold">Prix de vente (€)</label>
+            <input 
+              className="w-full border p-2 rounded mb-4"
+              value={produit.prix_revente || ""}
+              type="number"
+              onChange={(e) => setProduit({ ...produit, prix_revente: e.target.value })}
+            />
+          </>
+        )}
 
         <label className="block mb-2 font-semibold">Date d'achat</label>
         <input
@@ -103,21 +109,31 @@ export default function ProduitDetail() {
           value={produit.date_achat?.substring(0, 10)}
           onChange={(e) => setProduit({ ...produit, date_achat: e.target.value })}
         />
-
-        <label className="block mb-2 font-semibold">Date de vente</label>
-        <input
-          className="w-full border p-2 rounded mb-6"
-          type="date"
-          value={produit.date_vente?.substring(0, 10) || ''}
-          onChange={(e) => setProduit({ ...produit, date_vente: e.target.value })}
-        />
-
+        {produit.vendu && (
+          <>
+            <label className="block mb-2 font-semibold">Date de vente</label>
+            <input
+              className="w-full border p-2 rounded mb-6"
+              type="date"
+              value={produit.date_vente?.substring(0, 10) || ''}
+              onChange={(e) => setProduit({ ...produit, date_vente: e.target.value })}
+            />
+          </>
+        )}
         <div className="text-center">
           <button
             onClick={handleUpdate}
             className="bg-forest text-white px-6 py-2 rounded hover:bg-[#3b5548]"
           >
             Enregistrer les modifications
+          </button>
+        </div>
+        <div className="mt-4">
+          <button
+            onClick={() => navigate("/home")}
+            className="bg-[#D99C83] hover:bg-[#cc8871] text-white font-semibold py-2 px-5 rounded-full transition mt-4"
+          >
+            ← Retour à l’accueil
           </button>
         </div>
       </div>
