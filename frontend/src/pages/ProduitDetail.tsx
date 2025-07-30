@@ -128,10 +128,10 @@ export default function ProduitDetail() {
             Enregistrer les modifications
           </button>
         </div>
-        <div className="mt-4">
+        <div className="flex justify-center mt-6 mb-4">
           <button
             onClick={() => navigate("/home")}
-            className="bg-[#D99C83] hover:bg-[#cc8871] text-white font-semibold py-2 px-5 rounded-full transition mt-4"
+            className="bg-[#D99C83] hover:bg-[#cc8871] text-white font-semibold py-2 px-5 rounded-full transition"
           >
             ← Retour à l’accueil
           </button>
