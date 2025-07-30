@@ -111,14 +111,14 @@ router.get('/:id', authenticateToken, async (req, res) => {
 
 router.put('/:id/update', uploads.single('image'), authenticateToken, async (req, res) => {
   const { id } = req.params;
-  const { titre, prix, date_achat } = req.body;
+  const { titre, prix, prix_revente, date_achat } = req.body;
 
   try {
     let image_url = null;
     if (req.file) {
       image_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
       await pool.query(
-        'UPDATE produits SET titre=$1, prix=$2, date_achat=$3, image_url=$4 WHERE id=$5',
+        'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, image_url=$5 WHERE id=$6',
         [titre, prix, date_achat, image_url, id]
       );
     } else {
