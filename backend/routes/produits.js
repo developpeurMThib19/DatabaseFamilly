@@ -14,7 +14,6 @@ const storage = multer.diskStorage({
     },
 });
 
-const multer = require('multer');
 const storage = require('../utils/cloudinaryStorage');
 const uploads = multer({ storage });
 
