@@ -134,14 +134,16 @@ export default function ProduitDetail() {
         ✅ Modifications enregistrées !
         </div>
       )}
-      <div className="flex justify-center mb-6">
-        <button
-          onClick={() => navigate("/home")}
-          className="bg-[#D99C83] hover:bg-[#c88872] text-white font-semibold py-2 px-5 rounded-full transition"
-        >
-          ← Retour à l’accueil
-        </button>
-      </div>
+      {showToast && (
+        <div className="text-center mt-6">
+          <button
+            onClick={() => navigate("/home")}
+            className="bg-[#D99C83] hover:bg-[#cc8871] text-white font-semibold py-2 px-5 rounded-full transition"
+          >
+            ← Retour à l’accueil
+          </button>
+        </div>
+      )}
     </div>
   );
 }
