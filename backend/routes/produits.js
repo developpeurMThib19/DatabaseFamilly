@@ -112,7 +112,8 @@ router.get('/:id', authenticateToken, async (req, res) => {
 router.put('/:id/update', uploads.single('image'), authenticateToken, async (req, res) => {
   const { id } = req.params;
   const { titre, prix, prix_revente, date_achat } = req.body;
-
+  console.log({ titre, prix, prix_revente, date_achat });
+  
   try {
     let image_url = null;
     if (req.file) {
