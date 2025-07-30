@@ -119,12 +119,12 @@ router.put('/:id/update', uploads.single('image'), authenticateToken, async (req
       image_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
       await pool.query(
         'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, image_url=$5 WHERE id=$6',
-        [titre, prix, date_achat, image_url, id]
+        [titre, prix, prix_revente, date_achat, image_url, id]
       );
     } else {
       await pool.query(
         'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, image_url=$5 WHERE id=$6',
-        [titre, prix, date_achat, id]
+        [titre, prix, prix_revente, date_achat, id]
       );
     }
 
