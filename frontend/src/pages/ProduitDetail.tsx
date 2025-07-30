@@ -36,6 +36,8 @@ export default function ProduitDetail() {
     formData.append("titre", produit.titre);
     formData.append("prix", produit.prix);
     formData.append("date_achat", produit.date_achat);
+    formData.append("prix_vente", produit.prix_vente || '');
+    formData.append("date_vente", produit.date_vente || '');
     if (newImage) formData.append("image", newImage);
   
     try {

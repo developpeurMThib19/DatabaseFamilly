@@ -174,6 +174,12 @@ export default function Historique() {
                     </td>
                     <td>{new Date(p.date_achat).toLocaleDateString()}</td>
                     <td>{new Date(p.date_achat).toLocaleDateString()}</td>
+                    <td>
+                      <button onClick={() => navigate(`/produit/${p.id}`)} 
+                        className="text-sm text-blue-600 hover:underline">
+                        Modifier
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
