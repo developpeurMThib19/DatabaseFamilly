@@ -128,7 +128,6 @@ export default function ProduitDetail() {
               Enregistrer les modifications
             </button>
 
-            {showToast && (
               <div className="mt-4">
                 <button
                   onClick={() => navigate("/home")}
@@ -137,7 +136,6 @@ export default function ProduitDetail() {
                   ← Retour à l’accueil
                 </button>
               </div>
-            )}
         </div>
       </div>
     </div>
