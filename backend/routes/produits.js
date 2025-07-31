@@ -37,7 +37,7 @@ router.post('/add', uploads.single('image'), async (req, res) => {
     }
 
     const image_url = req.file?.path || `${req.protocol}://${req.get('host')}/static/default-image.jpg`;
-    console.log("📸 Image reçue :", req.file);
+    console.log("📸 Image reçue 1 :", req.file);
     await pool.query(
       'INSERT INTO produits (utilisateur_id, titre, prix, image_url, date_achat) VALUES ($1, $2, $3, $4, $5)',
       [decoded.userId, titre, prixFloat, image_url, date_achat]
@@ -93,7 +93,7 @@ router.get('/', async (req, res) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const { userId } = decoded;
-        console.log("📸 Image reçue :", req.file);
+        console.log("📸 Image reçue 3:", req.file);
         const result = await pool.query(
             'SELECT id, titre, prix, prix_revente, image_url, date_achat, vendu FROM produits WHERE utilisateur_id = $1',
             [userId]
@@ -136,13 +136,13 @@ router.put('/:id/update', uploads.single('image'), authenticateToken, async (req
     let image_url = null;
     if (req.file) {
       image_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-      console.log("📸 Image reçue :", req.file);
+      console.log("📸 Image reçue 2 :", req.file);
       await pool.query(
         'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, date_vente=$5, image_url=$6 WHERE id=$7',
         [titre, prix, prix_revente, date_achat, date_vente, image_url, id]
       );
     } else {
-      console.log("📸 Image reçue :", req.file);
+      console.log("📸 Image reçue 4:", req.file);
       await pool.query(
         'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, date_vente=$5 WHERE id=$6',
         [titre, prix, prix_revente, date_achat, date_vente, id]
