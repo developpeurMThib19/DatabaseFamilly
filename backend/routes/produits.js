@@ -31,8 +31,11 @@ router.post('/add', uploads.single('image'), async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // ✅ DÉSTRUCTURATION D'ABORD
     const { titre, prix, date_achat } = req.body;
 
+    // ✅ Ensuite, parseFloat
     const prixFloat = parseFloat(prix);
     if (isNaN(prixFloat)) {
       return res.status(400).json({ error: 'Le prix doit être un nombre valide.' });
@@ -51,6 +54,7 @@ router.post('/add', uploads.single('image'), async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 
 
