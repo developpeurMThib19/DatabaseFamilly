@@ -9,13 +9,9 @@ const uploads = multer({ storage: cloudinaryStorage });
 const authenticateToken = require('../middlewares/authenticateToken');
 
 router.post('/add', uploads.single('image'), async (req, res) => {
-  console.log("🧾 Champs reçus :", req.body);
-  console.log("📸 Image reçue :", req.file);
 
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Token manquant' });
-  console.log("🧾 Champs reçus :", req.body);
-  console.log("📸 Image reçue :", req.file);
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -30,8 +26,6 @@ router.post('/add', uploads.single('image'), async (req, res) => {
       'INSERT INTO produits (utilisateur_id, titre, prix, image_url, date_achat) VALUES ($1, $2, $3, $4, $5)',
       [decoded.userId, titre, prixFloat, image_url, date_achat]
     );
-    console.log("🧾 Champs reçus :", req.body);
-    console.log("📸 Image reçue :", req.file);
   
     res.json({ success: true });
   } catch (err) {
@@ -85,14 +79,12 @@ router.get('/', async (req, res) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const { userId } = decoded;
-        console.log("📸 Image reçue 3:", req.file);
         const result = await pool.query(
             'SELECT id, titre, prix, prix_revente, image_url, date_achat, vendu FROM produits WHERE utilisateur_id = $1',
             [userId]
         );
         res.json(result.rows);
     } catch (err) {
-        console.log('Erreur récupération produits :', err);
         res.status(500).json({ error: err.message });
     }
 });
@@ -128,13 +120,11 @@ router.put('/:id/update', uploads.single('image'), authenticateToken, async (req
     let image_url = null;
     if (req.file) {
       image_url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-      console.log("📸 Image reçue 2 :", req.file);
       await pool.query(
         'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, date_vente=$5, image_url=$6 WHERE id=$7',
         [titre, prix, prix_revente, date_achat, date_vente, image_url, id]
       );
     } else {
-      console.log("📸 Image reçue 4:", req.file);
       await pool.query(
         'UPDATE produits SET titre=$1, prix=$2, prix_revente=$3, date_achat=$4, date_vente=$5 WHERE id=$6',
         [titre, prix, prix_revente, date_achat, date_vente, id]

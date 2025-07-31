@@ -31,7 +31,6 @@ app.use(cors({
 app.use(express.json());
 
 app.use((req, res, next) => {
-  console.log("🛠 Middleware général → méthode :", req.method, "URL :", req.url);
   next();
 });
 
@@ -49,7 +48,6 @@ app.use('/api/produits', produitsRouter);
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 app.use('/api/produits', require('./routes/produits'));
-console.log("🚀 Route /api/produits chargée");
 
 // ✅ Fichiers statiques
 app.use('/uploads', express.static('uploads'));
@@ -62,20 +60,17 @@ app.post('/api/auth/register', (req, res) => {
     return res.status(400).json({ error: 'Email et mot de passe requis' });
   }
 
-  console.log('Nouvel utilisateur enregistré :', { nom, prenom, email });
   res.status(201).json({ message: 'Inscription réussie' });
 });
 
 // ✅ Lancer le serveur (une seule fois !)
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Serveur lancé sur le port ${PORT}`);
 });
 
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 app.use('/api/auth', authRoutes);
 app.use('/api/produits', require('./routes/produits'));
-console.log("🚀 Route /api/produits chargée");
 
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, 'public', 'index.html'));

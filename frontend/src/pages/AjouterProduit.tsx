@@ -20,15 +20,10 @@ export default function AjouterProduit() {
     formData.append('prix', prix);
     formData.append('date_achat', dateAchat);
     if (image) {
-      console.log("📦 Image à envoyer 1 :", image);
-
       formData.append('image', image);
     }
-    console.log("📦 Image à envoyer 2 :", image);
-
 
     try {
-      
       await axios.post(`${import.meta.env.VITE_API_URL}/api/produits/add`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -36,10 +31,6 @@ export default function AjouterProduit() {
         },
       });
       navigate('/home');
-      console.log("📦 FormData avant envoi :");
-      for (const [key, value] of formData.entries()) {
-        console.log(`🧾 ${key}:`, value);
-      }
     } catch (err) {
       alert("Erreur lors de l'ajout du produit");
       console.error(err);
@@ -89,7 +80,6 @@ export default function AjouterProduit() {
           accept="image/*"
           onChange={e => {
             const file = e.target.files?.[0] || null;
-            console.log("📸 Fichier sélectionné :", file);
             setImage(file);
           }}
           className="w-full mb-6 text-[#4a6b5a] file:mr-3 file:py-1 file:px-3 file:rounded file:border file:border-[#4a6b5a] file:text-sm file:bg-white file:text-[#4a6b5a] hover:file:bg-[#f0f0f0]"

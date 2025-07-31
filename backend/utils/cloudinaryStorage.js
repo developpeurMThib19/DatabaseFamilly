@@ -15,7 +15,4 @@ const storage = new CloudinaryStorage({
   },
 });
 
-// ✅ Ce log doit venir **après** l'initialisation
-console.log("🔧 Cloudinary storage ready :", typeof storage._handleFile); // doit être "function"
-
 module.exports = storage;
