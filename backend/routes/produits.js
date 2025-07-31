@@ -38,13 +38,11 @@ router.post('/add', uploads.single('image'), async (req, res) => {
       return res.status(400).json({ error: 'Le prix doit être un nombre valide.' });
     }
 
-    // ✅ Adapté pour Cloudinary : req.file?.path contient l’URL hébergée
-    // ✅ Si Cloudinary renvoie une image, on l'utilise, sinon image par défaut
     const image_url = req.file?.path || `${req.protocol}://${req.get('host')}/static/default-image.jpg`;
 
     await pool.query(
       'INSERT INTO produits (utilisateur_id, titre, prix, image_url, date_achat) VALUES ($1, $2, $3, $4, $5)',
-      [decoded.userId, titre, parseFloat(prix), image_url, date_achat]
+      [decoded.userId, titre, prixFloat, image_url, date_achat]
     );
 
     res.json({ success: true });
@@ -53,6 +51,7 @@ router.post('/add', uploads.single('image'), async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 
 router.put('/:id/vendu', authenticateToken, async (req, res) => {
