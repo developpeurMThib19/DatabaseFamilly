@@ -20,6 +20,7 @@ const storage = require('../utils/cloudinaryStorage');
 const uploads = multer({ storage });
 
 router.post('/add', uploads.single('image'), async (req, res) => {
+  console.log("FICHIER REÇU :", req.file);
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Token manquant' });
 
@@ -45,12 +46,16 @@ router.post('/add', uploads.single('image'), async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     console.error('Erreur ajout produit :', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message || err });
   }
 });
 
 
-
+const formData = new FormData();
+formData.append("titre", titre);
+formData.append("prix", prix);
+formData.append("date_achat", date_achat);
+if (image) formData.append("image", image);
 
 router.put('/:id/vendu', authenticateToken, async (req, res) => {
   const produitId = req.params.id;
