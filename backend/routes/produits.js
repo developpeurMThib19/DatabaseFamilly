@@ -45,8 +45,8 @@ router.post('/add', uploads.single('image'), async (req, res) => {
 
     res.json({ success: true });
   } catch (err) {
-    console.error('Erreur ajout produit :', err);
-    res.status(500).json({ error: err.message || err });
+    console.error('Erreur ajout produit :', err.message, err.stack);
+    res.status(500).json({ error: err.message });
   }
 });
 
