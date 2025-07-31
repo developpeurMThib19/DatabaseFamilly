@@ -51,12 +51,6 @@ router.post('/add', uploads.single('image'), async (req, res) => {
 });
 
 
-const formData = new FormData();
-formData.append("titre", titre);
-formData.append("prix", prix);
-formData.append("date_achat", date_achat);
-if (image) formData.append("image", image);
-
 router.put('/:id/vendu', authenticateToken, async (req, res) => {
   const produitId = req.params.id;
   const { prix_revente } = req.body;
