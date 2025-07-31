@@ -6,6 +6,7 @@ const pool = require('../db');
 const multer = require('multer');
 const cloudinaryStorage = require('../utils/cloudinaryStorage');
 const uploads = multer({ storage: cloudinaryStorage });
+const authenticateToken = require('../middlewares/authenticateToken');
 
 router.post('/add', uploads.single('image'), async (req, res) => {
   console.log("🧾 Champs reçus :", req.body);
