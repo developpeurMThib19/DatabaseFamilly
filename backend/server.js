@@ -30,6 +30,11 @@ app.use(cors({
 // ✅ Middleware pour parser les JSON
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log("🛠 Middleware général → méthode :", req.method, "URL :", req.url);
+  next();
+});
+
 app.use(express.urlencoded({ extended: true }));
 
 // ✅ Servir les fichiers statiques (comme default-image.jpg)

@@ -22,11 +22,10 @@ export default function AjouterProduit() {
     if (image) {
       formData.append('image', image);
     }
+    console.log(image)
 
     try {
-      for (const [key, value] of formData.entries()) {
-        console.log(`🧾 ${key}:`, value);
-      }
+      
       await axios.post(`${import.meta.env.VITE_API_URL}/api/produits/add`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -34,6 +33,9 @@ export default function AjouterProduit() {
         },
       });
       navigate('/home');
+      for (const [key, value] of formData.entries()) {
+        console.log(`🧾 ${key}:`, value);
+      }
     } catch (err) {
       alert("Erreur lors de l'ajout du produit");
       console.error(err);
