@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
 const router = express.Router();
+const bcrypt = require('bcrypt');
 
 router.post('/register', async (req, res) => {
   const { nom, prenom, email, password } = req.body;
@@ -18,9 +19,11 @@ router.post('/register', async (req, res) => {
   }
 
   try {
+    // 🔐 HASH DU MOT DE PASSE
+    const hashedPassword = await bcrypt.hash(mot_de_passe, saltRounds);
     const result = await pool.query(
       'INSERT INTO users (nom, prenom, email, password) VALUES ($1, $2, $3, $4) RETURNING id',
-      [nom, prenom, email, password]
+      [nom, prenom, email, hashedPassword]
     );
 
     res.status(201).json({ message: 'Inscription réussie', id: result.rows[0].id });
@@ -34,24 +37,27 @@ router.post('/register', async (req, res) => {
     const { email, password } = req.body;
     try {
       const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+
+      if (result.rows.length === 0) {
+        return res.status(400).json({ error: 'Email non trouvé' });
+      }
+
       const user = result.rows[0];
   
-      if (!user) {
-        return res.status(400).json({ error: 'email' }); // Email incorrect
-      }
-  
+      // 🔐 COMPARAISON DU MOT DE PASSE
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
         return res.status(400).json({ error: 'password' }); // Mot de passe incorrect
       }
   
-      const token = jwt.sign({ userId: user.id, nom: user.nom, prenom: user.prenom, email: user.email }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ 
+        userId: user.id, is_admin: user.is_admin, nom: user.nom, prenom: user.prenom, email: user.email }, process.env.JWT_SECRET, {
         expiresIn: '24h',
       });
   
       res.json({ token });
     } catch (err) {
-      res.status(500).json({ error: 'server' });
+      res.status(500).json({ error: 'Erreur server' });
     }
   });
   
