@@ -1,44 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../db');
 const jwt = require('jsonwebtoken');
+const pool = require('../db');
+
 const multer = require('multer');
-const path = require('path');
-const authenticateToken = require('../middlewares/authenticateToken');
-
-// Local
-// const storage = multer.diskStorage({
-//     destination: 'uploads/',
-//     filename: (req, file, cb) => {
-//         const ext = path.extname(file.originalname);
-//         cb(null, Date.now() + ext);
-//     },
-// });
-
-const storage = require('../utils/cloudinaryStorage');
-
-const uploads = multer({ storage });
+const cloudinaryStorage = require('../utils/cloudinaryStorage');
+const uploads = multer({ storage: cloudinaryStorage });
 
 router.post('/add', uploads.single('image'), async (req, res) => {
-  console.log("🧾 Champs reçus :", Object.keys(req.body));
-  console.log("🖼️ Fichier image reçu :", req.file);
+  console.log("🧾 Champs reçus :", req.body);
+  console.log("📸 Image reçue :", req.file);
+
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Token manquant' });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // ✅ DÉSTRUCTURATION D'ABORD
     const { titre, prix, date_achat } = req.body;
 
-    // ✅ Ensuite, parseFloat
     const prixFloat = parseFloat(prix);
-    if (isNaN(prixFloat)) {
-      return res.status(400).json({ error: 'Le prix doit être un nombre valide.' });
-    }
+    if (isNaN(prixFloat)) return res.status(400).json({ error: 'Prix invalide' });
 
     const image_url = req.file?.path || `${req.protocol}://${req.get('host')}/static/default-image.jpg`;
-    console.log("📸 Image reçue 1 :", req.file);
+
     await pool.query(
       'INSERT INTO produits (utilisateur_id, titre, prix, image_url, date_achat) VALUES ($1, $2, $3, $4, $5)',
       [decoded.userId, titre, prixFloat, image_url, date_achat]
@@ -46,10 +30,11 @@ router.post('/add', uploads.single('image'), async (req, res) => {
 
     res.json({ success: true });
   } catch (err) {
-    console.error('Erreur ajout produit :', err);
+    console.error('Erreur ajout produit :', err.message);
     res.status(500).json({ error: err.message });
   }
 });
+
 
 
 router.put('/:id/vendu', authenticateToken, async (req, res) => {
