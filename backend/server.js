@@ -30,6 +30,8 @@ app.use(cors({
 // ✅ Middleware pour parser les JSON
 app.use(express.json());
 
+app.use(express.urlencoded({ extended: true }));
+
 // ✅ Servir les fichiers statiques (comme default-image.jpg)
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
