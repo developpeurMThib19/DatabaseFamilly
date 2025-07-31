@@ -14,6 +14,8 @@ router.post('/add', uploads.single('image'), async (req, res) => {
 
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Token manquant' });
+  console.log("🧾 Champs reçus :", req.body);
+  console.log("📸 Image reçue :", req.file);
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -28,7 +30,9 @@ router.post('/add', uploads.single('image'), async (req, res) => {
       'INSERT INTO produits (utilisateur_id, titre, prix, image_url, date_achat) VALUES ($1, $2, $3, $4, $5)',
       [decoded.userId, titre, prixFloat, image_url, date_achat]
     );
-
+    console.log("🧾 Champs reçus :", req.body);
+    console.log("📸 Image reçue :", req.file);
+  
     res.json({ success: true });
   } catch (err) {
     console.error('Erreur ajout produit :', err.message);
