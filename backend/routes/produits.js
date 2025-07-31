@@ -129,7 +129,7 @@ router.put('/:id/update', uploads.single('image'), authenticateToken, async (req
   const { id } = req.params;
   const { titre, prix, prix_revente, date_achat, date_vente } = req.body;
   
-  const prixFloat = parseFloat(prix);
+  //const prixFloat = parseFloat(prix);
   const prixReventeFloat = prix_revente ? parseFloat(prix_revente) : null;
 
   if (isNaN(prixFloat)) {
