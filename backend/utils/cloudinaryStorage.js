@@ -1,13 +1,18 @@
-// utils/cloudinaryStorage.js
+const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudinary = require('./cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: 'produits', // dossier dans ton Cloudinary
-        allowed_formats: ['jpg', 'png', 'jpeg'],
-    },
+  cloudinary,
+  params: {
+    folder: 'produits', // optionnel : nom du dossier Cloudinary
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
+  },
 });
 
 module.exports = storage;
