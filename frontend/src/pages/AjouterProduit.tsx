@@ -76,6 +76,7 @@ export default function AjouterProduit() {
 
         <input
           type="file"
+          name="image"
           accept="image/*"
           onChange={e => setImage(e.target.files?.[0] || null)}
           className="w-full mb-6 text-[#4a6b5a] file:mr-3 file:py-1 file:px-3 file:rounded file:border file:border-[#4a6b5a] file:text-sm file:bg-white file:text-[#4a6b5a] hover:file:bg-[#f0f0f0]"
