@@ -44,6 +44,7 @@ app.use('/api/produits', produitsRouter);
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 app.use('/api/produits', require('./routes/produits'));
+console.log("🚀 Route /api/produits chargée");
 
 // ✅ Fichiers statiques
 app.use('/uploads', express.static('uploads'));
@@ -69,7 +70,7 @@ app.listen(PORT, '0.0.0.0', () => {
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 app.use('/api/auth', authRoutes);
 app.use('/api/produits', require('./routes/produits'));
-
+console.log("🚀 Route /api/produits chargée");
 
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, 'public', 'index.html'));

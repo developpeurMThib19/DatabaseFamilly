@@ -14,5 +14,9 @@ const storage = new CloudinaryStorage({
     allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
   },
 });
-
+console.log("🔧 Cloudinary configuré avec :", {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: "********" // ne jamais afficher
+  });
 module.exports = storage;
