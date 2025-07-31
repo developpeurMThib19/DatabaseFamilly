@@ -20,16 +20,19 @@ export default function AjouterProduit() {
     formData.append('prix', prix);
     formData.append('date_achat', dateAchat);
     if (image) {
+      console.log("📦 Image à envoyer 1 :", image);
+
       formData.append('image', image);
     }
-    console.log(image)
+    console.log("📦 Image à envoyer 2 :", image);
+
 
     try {
       
       await axios.post(`${import.meta.env.VITE_API_URL}/api/produits/add`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
+        //  'Content-Type': 'multipart/form-data',
         },
       });
       navigate('/home');
