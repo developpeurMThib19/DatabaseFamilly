@@ -20,8 +20,8 @@ const storage = require('../utils/cloudinaryStorage');
 const uploads = multer({ storage });
 
 router.post('/add', uploads.single('image'), async (req, res) => {
-  console.log("🔥 BODY :", req.body);
-  console.log("📸 FICHIER :", req.file);
+  console.log("🧾 Champs reçus :", Object.keys(req.body));
+  console.log("🖼️ Fichier image reçu :", req.file);
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Token manquant' });
 
