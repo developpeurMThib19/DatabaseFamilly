@@ -54,12 +54,12 @@ const AdminUsersPage = () => {
                 <th className="px-4 py-3 text-left border">Statut</th>
                 <th className="px-4 py-3 text-left border">Dernière connexion</th>
                 <th className="px-4 py-3 text-left border">Durée session</th>
-                <th className="px-4 py-3 text-left border">Connexions</th>
+                <th className="px-4 py-3 text-left border">Numbre de connexions</th>
               </tr>
             </thead>
-            <tbody className="bg-white text-sm">
+            <tbody className="bg-white text-gray-600 text-sm">
               {users.map((u) => (
-                <tr key={u.id} className="hover:bg-[#4a4542] transition">
+                <tr key={u.id} className="hover:bg-[#fff4ed] transition">
                   <td className="px-4 py-3 border">{u.email}</td>
                   <td className="px-4 py-3 border">{u.nom} {u.prenom}</td>
                   <td className="px-4 py-3 border">
