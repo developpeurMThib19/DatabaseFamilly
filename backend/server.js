@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
-
+const adminRoutes = require('./routes/admin');
 const app = express();
 
 // 🔓 Origines autorisées (frontend React)
@@ -62,6 +62,8 @@ app.post('/api/auth/register', (req, res) => {
 
   res.status(201).json({ message: 'Inscription réussie' });
 });
+
+app.use('/api/admin', adminRoutes);
 
 // ✅ Lancer le serveur (une seule fois !)
 const PORT = process.env.PORT || 3001;

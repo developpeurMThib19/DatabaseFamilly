@@ -60,6 +60,24 @@ router.post('/register', async (req, res) => {
       res.status(500).json({ error: 'Erreur server' });
     }
   });
+
+  router.post('/logout', async (req, res) => {
+    const { userId } = req.body;
+
+    try {
+      await pool.query(`
+      UPDATE users
+      SET is_online = false,
+          session_duration = NOW() - login_time
+      WHERE id = $1
+    `, [userId]);
+
+    res.status(200).json({ message: 'Déconnexion réussie' });
+  } catch (err) {
+    console.error('Erreur lors de la déconnexion :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
   
   
 
