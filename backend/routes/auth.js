@@ -61,34 +61,22 @@ router.post('/register', async (req, res) => {
     }
   });
 
-  router.post('/logout', async (req, res) => {
-    const { userId } = req.body;
-
+  router.post('/logout', authenticateToken, async (req, res) => {
+    const userId = req.user.userId;
+  
     try {
       await pool.query(`
-      UPDATE users
-      SET is_online = false,
-          session_duration = NOW() - login_time
-      WHERE id = $1
-    `, [userId]);
-
-    res.status(200).json({ message: 'Déconnexion réussie' });
-  } catch (err) {
-    console.error('Erreur lors de la déconnexion :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
-  }
-
-  await pool.query(`
-    UPDATE users
-    SET last_login = NOW(),
-        is_online = true,
-        login_time = NOW(),
-        login_count = COALESCE(login_count, 0) + 1
-    WHERE id = $1
-  `, [user.id]);
+        UPDATE users
+        SET is_online = false,
+            session_duration = NOW() - login_time
+        WHERE id = $1
+      `, [userId]);
   
-});
+      res.status(200).json({ message: 'Déconnexion réussie' });
+    } catch (err) {
+      console.error('Erreur lors de la déconnexion :', err);
+      res.status(500).json({ error: 'Erreur serveur' });
+    }
+  });
   
-  
-
-module.exports = router;
+  module.exports = router;
