@@ -4,6 +4,7 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
 const router = express.Router();
+const authenticateToken = require('../middlewares/authenticateToken');
 
 router.post('/register', async (req, res) => {
   const { nom, prenom, email, password } = req.body;
