@@ -7,7 +7,7 @@ const app = express();
 
 // 🔓 Origines autorisées (frontend React)
 const allowedOrigins = [
-  'https://databasefamilly-1.onrender.com',
+  'https://databasefamilly.onrender.com',
   'http://localhost:3000',
 ];
 
