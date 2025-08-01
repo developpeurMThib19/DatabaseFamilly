@@ -35,49 +35,55 @@ const AdminUsersPage = () => {
   }, []);
   
 
-  if (error) return <div className="text-red-500">{error}</div>;
+  if (error) return <div className="text-red-500 text-center mt-4">{error}</div>;
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">👨‍💻 Liste des utilisateurs</h1>
-      <table className="w-full table-auto border border-collapse border-gray-300">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border p-2">Email</th>
-            <th className="border p-2">Nom</th>
-            <th className="border p-2">Statut</th>
-            <th className="border p-2">Dernière connexion</th>
-            <th className="border p-2">Durée session</th>
-            <th className="border p-2">Avatar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.isArray(users) && users.map((u) => (
-            <tr key={u.id}>
-              <td className="border p-2">{u.email}</td>
-              <td className="border p-2">
-                {u.nom} {u.prenom}
-              </td>
-              <td className="border p-2">{u.is_online ? '✅' : '❌'}</td>
-              <td className="border p-2">
-                {u.last_login ? new Date(u.last_login).toLocaleString() : '—'}
-              </td>
-              <td className="border p-2">{u.session_duration ?? '—'}</td>
-              <td className="border p-2">
-                {u.avatar_url ? (
-                  <img
-                    src={u.avatar_url}
-                    alt="avatar"
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                ) : (
-                  '—'
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="min-h-screen bg-[#f6f1e7] flex items-center justify-center py-10 px-4">
+      <div className="bg-white shadow-md rounded-xl p-8 w-full max-w-6xl">
+        <h1 className="text-2xl font-semibold text-center mb-6 text-gray-800">
+          👩‍💼 Liste des utilisateurs
+        </h1>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full border border-gray-200 rounded-md overflow-hidden">
+            <thead className="bg-gray-100 text-gray-600 text-sm uppercase tracking-wider">
+              <tr>
+                <th className="px-4 py-3 text-left border">Email</th>
+                <th className="px-4 py-3 text-left border">Nom</th>
+                <th className="px-4 py-3 text-left border">Statut</th>
+                <th className="px-4 py-3 text-left border">Dernière connexion</th>
+                <th className="px-4 py-3 text-left border">Durée session</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white text-sm">
+              {users.map((u) => (
+                <tr key={u.id} className="hover:bg-[#f9f5ee] transition">
+                  <td className="px-4 py-3 border">{u.email}</td>
+                  <td className="px-4 py-3 border">{u.nom} {u.prenom}</td>
+                  <td className="px-4 py-3 border">
+                    <span className={`font-bold ${u.is_online ? 'text-green-600' : 'text-gray-400'}`}>
+                      {u.is_online ? 'En ligne' : 'Hors ligne'}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 border">
+                    {u.last_login ? new Date(u.last_login).toLocaleString() : '—'}
+                  </td>
+                  <td className="px-4 py-3 border">
+                    {u.session_duration ?? '—'}
+                  </td>
+                </tr>
+              ))}
+              {users.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="text-center py-4 text-gray-500">
+                    Aucun utilisateur à afficher.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
