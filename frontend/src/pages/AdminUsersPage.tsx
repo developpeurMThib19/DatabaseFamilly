@@ -10,6 +10,7 @@ interface User {
   is_online: boolean;
   session_duration: string | null;
   avatar_url?: string | null;
+  login_count: number;
 }
 
 const AdminUsersPage = () => {
@@ -53,11 +54,12 @@ const AdminUsersPage = () => {
                 <th className="px-4 py-3 text-left border">Statut</th>
                 <th className="px-4 py-3 text-left border">Dernière connexion</th>
                 <th className="px-4 py-3 text-left border">Durée session</th>
+                <th className="px-4 py-3 text-left border">Connexions</th>
               </tr>
             </thead>
             <tbody className="bg-white text-sm">
               {users.map((u) => (
-                <tr key={u.id} className="hover:bg-[#f9f5ee] transition">
+                <tr key={u.id} className="hover:bg-[#4a4542] transition">
                   <td className="px-4 py-3 border">{u.email}</td>
                   <td className="px-4 py-3 border">{u.nom} {u.prenom}</td>
                   <td className="px-4 py-3 border">
@@ -70,6 +72,9 @@ const AdminUsersPage = () => {
                   </td>
                   <td className="px-4 py-3 border">
                     {u.session_duration ?? '—'}
+                  </td>
+                  <td className="px-4 py-3 border text-center">
+                    {u.login_count ?? 0}
                   </td>
                 </tr>
               ))}

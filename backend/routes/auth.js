@@ -77,6 +77,16 @@ router.post('/register', async (req, res) => {
     console.error('Erreur lors de la déconnexion :', err);
     res.status(500).json({ error: 'Erreur serveur' });
   }
+
+  await pool.query(`
+    UPDATE users
+    SET last_login = NOW(),
+        is_online = true,
+        login_time = NOW(),
+        login_count = COALESCE(login_count, 0) + 1
+    WHERE id = $1
+  `, [user.id]);
+  
 });
   
   

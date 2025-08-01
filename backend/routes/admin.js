@@ -7,7 +7,7 @@ const authorizeAdmin = require('../middlewares/authorizeAdmin');
 router.get('/users', authorizeAdmin, async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT id, nom, prenom, email, last_login, is_online, session_duration, avatar_url
+      SELECT id, nom, prenom, email, last_login, is_online, session_duration, avatar_url, login_count
       FROM users
       ORDER BY last_login DESC
     `);
