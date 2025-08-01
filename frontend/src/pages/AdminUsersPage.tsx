@@ -15,14 +15,15 @@ interface User {
 const AdminUsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
   
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+  
+    axios.get(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // ✅ "Bearer " + token
+      },
+    })
       .then((res) => {
         console.log("DATA REÇUE :", res.data); // 👈 important
         setUsers(res.data);
