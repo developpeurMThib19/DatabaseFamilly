@@ -18,21 +18,21 @@ const AdminUsersPage = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-
+  
     axios
-      .get<User[]>('/api/admin/users', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      .get('https://ton-backend.onrender.com/api/admin/users', {
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
+        console.log("DATA REÇUE :", res.data); // 👈 important
         setUsers(res.data);
       })
       .catch((err) => {
-        console.error(err);
-        setError('⛔ Accès refusé ou erreur serveur');
+        console.error("Erreur API :", err);
+        setError("⛔ Erreur serveur ou accès refusé");
       });
   }, []);
+  
 
   if (error) return <div className="text-red-500">{error}</div>;
 
@@ -51,7 +51,7 @@ const AdminUsersPage = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((u) => (
+          {Array.isArray(users) && users.map((u) => (
             <tr key={u.id}>
               <td className="border p-2">{u.email}</td>
               <td className="border p-2">
