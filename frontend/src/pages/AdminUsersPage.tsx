@@ -8,6 +8,7 @@ interface User {
   email: string;
   last_login: string | null;
   is_online: boolean;
+  login_time?: string;
   session_duration: string | null;
   avatar_url?: string | null;
   login_count: number;
@@ -64,7 +65,7 @@ const AdminUsersPage = () => {
                   <td className="px-4 py-3 border">{u.nom} {u.prenom}</td>
                   <td className="px-4 py-3 border">
                     <span className={`font-bold ${u.is_online ? 'text-green-600' : 'text-gray-400'}`}>
-                      {u.is_online ? 'En ligne' : 'Hors ligne'}
+                      <td>{u.is_online ? '🟢 En ligne' : '❌ Hors ligne'}</td>
                     </span>
                   </td>
                   <td className="px-4 py-3 border">

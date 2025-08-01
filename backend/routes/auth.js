@@ -20,7 +20,6 @@ router.post('/register', async (req, res) => {
   }
 
   try {
-    // 🔐 HASH DU MOT DE PASSE
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const result = await pool.query(
       'INSERT INTO users (nom, prenom, email, password) VALUES ($1, $2, $3, $4) RETURNING id',
@@ -34,50 +33,70 @@ router.post('/register', async (req, res) => {
   }
 });
 
-  router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    try {
-      const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
 
-      if (result.rows.length === 0) {
-        return res.status(400).json({ error: 'Email non trouvé' });
-      }
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
-      const user = result.rows[0];
-  
-      // 🔐 COMPARAISON DU MOT DE PASSE
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        return res.status(400).json({ error: 'password' }); // Mot de passe incorrect
-      }
-  
-      const token = jwt.sign({ 
-        userId: user.id, is_admin: user.is_admin, nom: user.nom, prenom: user.prenom, email: user.email }, process.env.JWT_SECRET, {
-        expiresIn: '24h',
-      });
-  
-      res.json({ token });
-    } catch (err) {
-      res.status(500).json({ error: 'Erreur server' });
+    if (result.rows.length === 0) {
+      return res.status(400).json({ error: 'Email non trouvé' });
     }
-  });
 
-  router.post('/logout', authenticateToken, async (req, res) => {
-    const userId = req.user.userId;
-  
-    try {
-      await pool.query(`
-        UPDATE users
-        SET is_online = false,
-            session_duration = NOW() - login_time
-        WHERE id = $1
-      `, [userId]);
-  
-      res.status(200).json({ message: 'Déconnexion réussie' });
-    } catch (err) {
-      console.error('Erreur lors de la déconnexion :', err);
-      res.status(500).json({ error: 'Erreur serveur' });
+    const user = result.rows[0];
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
+      return res.status(400).json({ error: 'Mot de passe incorrect' });
     }
-  });
-  
-  module.exports = router;
+
+    // ✅ Mise à jour des champs au moment de la connexion
+    await pool.query(`
+      UPDATE users
+      SET 
+        last_login = NOW(),
+        login_time = NOW(),
+        is_online = true,
+        login_count = COALESCE(login_count, 0) + 1
+      WHERE id = $1
+    `, [user.id]);
+
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        is_admin: user.is_admin,
+        nom: user.nom,
+        prenom: user.prenom,
+        email: user.email,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.json({ token });
+  } catch (err) {
+    console.error('Erreur lors de la connexion :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+router.post('/logout', authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    await pool.query(`
+      UPDATE users
+      SET 
+        is_online = false,
+        session_duration = NOW() - login_time
+      WHERE id = $1
+    `, [userId]);
+
+    res.status(200).json({ message: 'Déconnexion réussie' });
+  } catch (err) {
+    console.error('Erreur lors de la déconnexion :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+module.exports = router;
