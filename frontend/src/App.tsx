@@ -6,6 +6,8 @@ import AjouterProduit from "./pages/AjouterProduit";
 import Historique from './pages/Historique';
 import PrivateRoute from "./components/PrivateRoute";
 import ProduitDetail from "./pages/ProduitDetail";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
+import AdminUsersPage from "./pages/AdminUsersPage";
 
 function App() {
   return(
@@ -20,6 +22,13 @@ function App() {
           <Route path="/historique" element={<Historique />} />
           <Route path="/produit/:id" element={<ProduitDetail />} />
         </Route>
+        <Route path="/admin"
+          element={
+            <ProtectedAdminRoute>
+              <AdminUsersPage />
+            </ProtectedAdminRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   )
