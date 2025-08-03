@@ -7,11 +7,13 @@ const router = express.Router();
 const authenticateToken = require('../middlewares/authenticateToken');
 
 router.post('/register', async (req, res) => {
-  const { nom, prenom, email, password } = req.body;
+  let { nom, prenom, email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email et mot de passe requis' });
   }
+
+  email = email.toLowerCase();
 
   const check = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
 
@@ -34,7 +36,9 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+  
+  email = email.toLowerCase();
 
   try {
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);

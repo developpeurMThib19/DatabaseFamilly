@@ -9,10 +9,13 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    const normalizedEmail = email.toLowerCase();
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, { email, password }, {
-        withCredentials: true,
-      });
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, { 
+        email: normalizedEmail, 
+        password 
+      }, { withCredentials: true });
+
       localStorage.setItem('token', res.data.token);
       navigate('/home');
     } catch (err: any) {
